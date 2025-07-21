@@ -1,5 +1,6 @@
 # Amazon Q pre block. Keep at the top of this file.
 [[ -f "${HOME}/Library/Application Support/amazon-q/shell/zshrc.pre.zsh" ]] && builtin source "${HOME}/Library/Application Support/amazon-q/shell/zshrc.pre.zsh"
+
 # ===========================
 # History Settings
 # ===========================
@@ -33,7 +34,7 @@ export EDITOR=nvim
 #export SSH_AUTH_SOCK="$(gpgconf --list-dirs agent-ssh-socket)"
 #GPG_TTY=$(tty)
 #export GPG_TTY
-eval "$(ssh-agent -s)"
+eval "$(ssh-agent -s)" >/dev/null
 
 # ===========================
 # Gatekeeper Aliases
@@ -91,7 +92,8 @@ autoload throw catch
 # ===========================
 # FZF
 # ===========================
-eval "$(fzf --zsh)"
+# Suppress ZLE option errors from FZF
+eval "$(fzf --zsh)" 2>/dev/null
 alias fzfpreview="fzf --preview 'bat --style=numbers --color=always --line-range :500 {}'"
 
 ## Use FZF to search zsh history
@@ -131,5 +133,6 @@ source /Users/nali/.zsh/completion/_b2
 
 # <<< b2 autocomplete <<<
 
+
 # Amazon Q post block. Keep at the bottom of this file.
-[[ -f "${HOME}/Library/Application Support/amazon-q/shell/zshrc.post.zsh" ]] && builtin source "${HOME}/Library/Application Support/amazon-q/shell/zshrc.post.zsh"
+#[[ -f "${HOME}/Library/Application Support/amazon-q/shell/zshrc.post.zsh" ]] && builtin source "${HOME}/Library/Application Support/amazon-q/shell/zshrc.post.zsh"
