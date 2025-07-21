@@ -33,7 +33,7 @@ export EDITOR=nvim
 #export SSH_AUTH_SOCK="$(gpgconf --list-dirs agent-ssh-socket)"
 #GPG_TTY=$(tty)
 #export GPG_TTY
-#eval "$(ssh-agent -s)"
+eval "$(ssh-agent -s)"
 
 # ===========================
 # Gatekeeper Aliases
@@ -53,6 +53,7 @@ alias vim='nvim'
 alias vi='nvim'
 alias naps2.console="/Applications/NAPS2.app/Contents/MacOS/NAPS2 console"
 alias ddgr="ddgr --unsafe --noua"
+alias rm=gomi
 
 # ===========================
 # Extending Commands Aliases
@@ -121,6 +122,14 @@ eval "$(mcfly init zsh)"
 # Load Additional Configurations
 # ===========================
 source ~/.zshrc_extra
+
+
+# >>> b2 autocomplete >>>
+# This section is managed by b2 . Manual edit may break automated updates.
+if [[ -z "$_comps" ]] && [[ -t 0 ]]; then autoload -Uz compinit && compinit -i -D; fi
+source /Users/nali/.zsh/completion/_b2
+
+# <<< b2 autocomplete <<<
 
 # Amazon Q post block. Keep at the bottom of this file.
 [[ -f "${HOME}/Library/Application Support/amazon-q/shell/zshrc.post.zsh" ]] && builtin source "${HOME}/Library/Application Support/amazon-q/shell/zshrc.post.zsh"
