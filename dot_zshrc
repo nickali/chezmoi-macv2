@@ -9,8 +9,13 @@ setopt inc_append_history
 setopt share_history
 setopt hist_ignore_all_dups
 
+# Optimize completion initialization - only rebuild once per day
 autoload -Uz compinit
-compinit
+if [ "$(date +'%j')" != "$(stat -f '%Sm' -t '%j' ~/.zcompdump 2>/dev/null)" ]; then
+    compinit
+else
+    compinit -C
+fi
 
 # ===========================
 # Copy dot files
@@ -34,7 +39,10 @@ export EDITOR=nvim
 #export SSH_AUTH_SOCK="$(gpgconf --list-dirs agent-ssh-socket)"
 #GPG_TTY=$(tty)
 #export GPG_TTY
-eval "$(ssh-agent -s)" >/dev/null
+# Only start ssh-agent if not already running
+if ! pgrep -u "$USER" ssh-agent > /dev/null; then
+    eval "$(ssh-agent -s)" >/dev/null
+fi
 
 # ===========================
 # Gatekeeper Aliases
@@ -81,7 +89,8 @@ autoload throw catch
 # ===========================
 # Starship prompt
 # ===========================
-export STARSHIP_CONFIG=~/.config/starship/starship.toml
+# Enable async rendering for better performance
+export STARSHIP_PROMPT_ASYNC=true
 eval "$(starship init zsh)"
 
 # ===========================
@@ -104,7 +113,10 @@ fh() {
 # ===========================
 # Zoxide Custom Functions
 # ===========================
-eval "$(zoxide init zsh --cmd cd)"
+# https://github.com/anthropics/claude-code/issues/2632#issuecomment-3024225046
+if [ -z "$DISABLE_ZOXIDE" ]; then
+    eval "$(zoxide init --cmd cd zsh)"
+fi
 
 # ===========================
 # MISE
@@ -129,10 +141,8 @@ source ~/.zshrc_extra
 # >>> b2 autocomplete >>>
 # This section is managed by b2 . Manual edit may break automated updates.
 if [[ -z "$_comps" ]] && [[ -t 0 ]]; then autoload -Uz compinit && compinit -i -D; fi
-source /Users/nali/.zsh/completion/_b2
-
+    source /Users/nali/.zsh/completion/_b2
 # <<< b2 autocomplete <<<
 
+test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
 
-# Amazon Q post block. Keep at the bottom of this file.
-#[[ -f "${HOME}/Library/Application Support/amazon-q/shell/zshrc.post.zsh" ]] && builtin source "${HOME}/Library/Application Support/amazon-q/shell/zshrc.post.zsh"
