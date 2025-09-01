@@ -1,0 +1,81 @@
+
+# ==========================
+# Upload to world accessible B2 bucket
+# ===========================
+
+upload_b2_file() {
+    # Check if both input file and destination file are provided
+    if [[ $# -ne 2 ]]; then
+        echo "Usage: upload_b2_file <input_file> <destination_file>"
+        return 1
+    fi
+
+    # Set the input file and destination file variables
+    local input_file="$1"
+    local destination_file="$(date +%Y)/$2"
+
+    # Run the b2 upload_file command and store the output
+    local output=$(b2 upload_file --no-progress nali-shared "$input_file" "$destination_file")
+
+    # Extract the URL from the output
+    local url=$(echo "$output" | grep -o "https://f002.backblazeb2.com/file/nali-shared/$destination_file")
+
+    # Modify the URL
+    local modified_url=${url/https:\/\/f002.backblazeb2.com\/file/https:\/\/web-files01.nali.org\/file}
+
+    # Copy the modified URL to the clipboard
+    echo "$modified_url" | pbcopy
+
+    # Print a success message
+    echo "Modified URL copied to clipboard: $modified_url"
+}
+
+# Environment variables already loaded in main .zshrc - removed duplicate
+
+# ==========================
+# Send pushbutton notifications
+# ===========================
+
+function po() {
+    local message
+
+    # Check if a message was provided as an argument or read from stdin
+    if [ -n "$1" ]; then
+        message="$1"
+    else
+        read -r message  # Read from stdin
+    fi
+
+    local response
+
+    # Send the curl request and capture the response
+    response=$(curl -s --form-string "token=$PUSHOVER_TOKEN" --form-string "user=$PUSHOVER_USER" --form-string "message=$message" https://api.pushover.net/1/messages.json)
+
+    # Check the HTTP response status using `curl`
+    local http_status=$?
+    if [ "$http_status" -eq 0 ]; then
+        local api_status=$(echo "$response" | jq -r '.status')
+
+        if [ "$api_status" -eq 1 ]; then
+            echo "Success."
+            echo ""
+            return 0
+        else
+            echo "Error."
+            echo ""
+            # Check for errors array in JSON response
+            if [ "$(echo "$response" | jq -r '.errors')" != "null" ]; then
+                echo "$response" | jq -r '.errors[]'
+                echo ""
+            fi
+            return 1
+        fi
+    else
+        echo "Failed $http_status."
+    fi
+}
+
+eval "$(tv init zsh)"
+
+
+
