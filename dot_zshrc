@@ -1,5 +1,5 @@
 # Amazon Q pre block. Keep at the top of this file.
-[[ -f "${HOME}/Library/Application Support/amazon-q/shell/zshrc.pre.zsh" ]] && builtin source "${HOME}/Library/Application Support/amazon-q/shell/zshrc.pre.zsh"
+#[[ -f "${HOME}/Library/Application Support/amazon-q/shell/zshrc.pre.zsh" ]] && builtin source "${HOME}/Library/Application Support/amazon-q/shell/zshrc.pre.zsh"
 
 # ===========================
 # History Settings
@@ -56,7 +56,7 @@ alias approvechromium='sudo spctl --add /Applications/Chromium.app'
 # ===========================
 
 alias dig='doggo'
-alias more="bat --theme 'ansi'"
+alias more="bat --theme 'zenburn'"
 alias top="htop -C"
 alias vim='nvim'
 alias vi='nvim'
@@ -78,7 +78,6 @@ alias adguardidun='ADGUARD_IP=$ADGUARD3_IP ADGUARD_PORT=$ADGUARD3_PORT ADGUARD_U
 # ssh Aliases
 # ===========================
 
-alias friggweb='ssh -L 32434:127.0.0.1:8080 -L 32435:127.0.0.1:8444 ubuntu@frigg.the6099.com'
 #
 # ===========================
 # Autoloads and Initializations
@@ -130,7 +129,7 @@ export PATH="$PATH:$HOME/.local/share/mise/installs/go/latest/bin"
 alias ssh='/Users/nali/bin/ssh-with-cert'
 alias oldssh='/usr/bin/ssh'  # backup for emergencies
 
-eval "$(mcfly init zsh)"
+#eval "$(mcfly init zsh)"
 
 # ===========================
 # Load Additional Configurations
