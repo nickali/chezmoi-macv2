@@ -1,0 +1,10 @@
+name: lightish  # use this name in your config file
+primary: '#4e78c4'
+secondary: '#f39c12'
+accent: '#e74c3c'
+#background: '#f2f2eb'
+background: '#E5E5E1'
+surface: '#17202a'
+error: '#e74c3c'  # error messages
+success: '#2ecc71'  # success messages
+warning: '#f1c40f'  # warning messages

@@ -48,7 +48,9 @@
       key: "dua i"
     - name: "View images, PDFs, in terminal"
       key: "mcat"
-      
+    - name: "Rust TLDR tealdeer"
+      key: "tldr"     
+
 - name: Neovim
   keybinds:
     - name: "Select blocks of text"
